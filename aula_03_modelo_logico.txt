@@ -1,0 +1,42 @@
+use Aula_04
+
+create table cidade(
+	codigo int not null
+		constraint pk_cidade primary key,
+	nome varchar(100) not null
+) -- CRIAÇÃO DA TABELA
+insert into cidade (codigo,nome)
+values(3,'Natal') -- INSERÇÃO DOS DADOS
+select * from cidade -- CONSULTA DOS DAADOS
+delete cidade 
+where codigo = 3 -- EXCLUSAO DOS DADOS
+
+create table pessoa(
+	codigo int not null
+		constraint pk_pessoa primary key,
+	cpf char(11) not null
+		constraint un_pessoa_cpf unique,
+	cidade int not null
+		constraint fk_pessoa_cidade foreign key
+		references cidade(codigo)
+) -- Criação da tabela
+insert into pessoa (codigo, cpf, cidade) -- Inserção
+values(3, '01270305487',2)
+select * from pessoa -- CONSULTA
+
+create table funcionario(
+	matricula int not null
+		constraint pk_matricula primary key,
+	nome varchar(100) not null,
+	cpf char(11) not null
+		constraint un_cpf unique,
+	nacionalidade varchar(50)
+		constraint df_func_nac default 'Brasil'
+)
+
+insert into funcionario (matricula, nome, cpf)
+values(1,'Fábio','01234567890')
+SELECT * FROM funcionario
+
+drop table funcionario --Deleta a tabela
+	
