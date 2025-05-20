@@ -1,0 +1,93 @@
+create database Loja
+use Loja
+create table TblCliente(
+	codigo char(5) not null
+		constraint pk_cliente primary key,
+	nome varchar(40) not null,
+	tipo char(1) not null check ( tipo like '[FJ]' ),
+	contato varchar(30),
+	endereco varchar(50) not null,
+	cidade smallint not null
+		constraint fk_TblCidade_cidade foreign key
+		references TblCidade(codigo),
+	cep varchar(10),
+	fone varchar(16),
+	fax varchar(16),
+	obs text
+)
+
+create table TableFuncionario(
+	codigo tinyint not null
+		constraint pk_funcionario primary key,
+	nome varchar(40) not null,
+	sexo char(1) not null check ( sexo like '[FM]' ),
+	estcivil char(1) not null check ( estcivil like '[SCVO]' ),
+	rg varchar(15) not null
+		constraint un_funcionario_rg unique,
+	cpf varchar(12) not null
+		constraint unique_funcionario_cpf unique,
+	trat varchar(4) not null constraint ck_TblFuncionario_trat check (trat in ('Sr', 'Sra', 'Srta', 'Dr', 'Dra')),
+	datanasc smalldatetime not null,
+	dataadm smalldatetime not null,
+	natural smallint not null
+		constraint fk_TblCidade_natural foreign key
+		references TblCidade(codigo),
+	endereco varchar(40) not null,
+	compl varchar(20),
+	bairro varchar(20),
+	reside smallint not null
+		constraint fk_TblCidade_reside foreign key
+		references TblCidade(codigo),
+	cep varchar(10),
+	fone varchar(10),
+	celular varchar(10),
+	funcao smallint
+		constraint fk_TblFuncao_funcao foreign key
+		references TblFuncao(codigo),
+	setor char(3) not null
+		constraint fk_TblSetor_setor foreign key
+		references TblSetor(sigla),
+	salario smallmoney not null,
+	email varchar(40),
+	obs text
+)
+
+create table TblSetor(
+	sigla char(3) not null
+		constraint pk_setor primary key,
+	nome varchar(30) not null
+		constraint un_setor unique,
+	ramal smallint,
+	superior char(3)
+		constraint fk_TblSetor_superior foreign key
+		references TblSetor(sigla),
+	chefe tinyint
+		constraint fk_TblSetor_chefe foreign key
+		references TblFuncionario(codigo),
+)
+
+create table TblFuncao(
+	codigo smallint not null
+		constraint pk_funcao primary key,
+	nome varchar(30) not null
+		constraint un_funcao unique,
+	gratific smallmoney not null
+)
+
+create table TblCidade(
+	codigo smallint not null
+		constraint pk_cidade primary key,
+	nome varchar(30) not null,
+	uf char(2) not null,
+	pais char(3) not null
+		constraint fk_TblPais_pais foreign key
+		references TblPais(sigla)
+)
+
+
+create table TblPais(
+	sigla char(3) not null
+		constraint pk_sigla primary key,
+	nome varchar(15) not null
+		constraint un_pais unique
+)
