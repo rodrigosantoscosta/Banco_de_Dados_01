@@ -1,5 +1,5 @@
-
-
+CREATE DATABASE Concessionaria;
+USE DATABASE Concessionaria;
 
 CREATE TABLE TblCliente(
   CPF varchar(12) not null
